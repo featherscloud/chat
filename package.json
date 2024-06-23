@@ -1,0 +1,20 @@
+{
+  "name": "@featherscloud/chat",
+  "version": "1.0.0",
+  "description": "A fully local-first chat written in different frameworks.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:react": "npm run build --workspace react-chat",
+    "build:vue": "npm run build --workspace vue-chat",
+    "build:svelte": "npm run build --workspace svelte-chat"
+  },
+  "workspaces": [
+    "react-chat",
+    "vue-chat",
+    "svelte-chat"
+  ],
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}
