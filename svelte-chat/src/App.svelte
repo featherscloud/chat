@@ -31,6 +31,7 @@
     'automerge:48G4qcpfCBXzm1JSBqmzYPigrwYU' as AnyDocumentId;
   const handle = repo.find<ChatDocument>(automergeUrl);
 
+  let ready = false;
   let cloudAuthUser: CloudAuthUser | null = null;
   let user: User | null = null;
   let messages: Message[] = [];
@@ -52,6 +53,7 @@
           messages = doc.messages;
           users = doc.users;
         }
+        ready = true;
       };
 
       cloudAuthUser = verifiedUser;
@@ -121,113 +123,121 @@
 </script>
 
 <main>
-  {#if user === null}
-    <div class="login flex min-h-screen bg-neutral justify-center items-center">
-      <div class="card w-full max-w-sm bg-base-100 px-4 py-8 shadow-xl">
-        <div class="px-4">
-          <h1
-            class="text-3xl font-bold text-center my-5 bg-clip-text bg-gradient-to-br"
-          >
-            Pick a username
-          </h1>
-        </div>
-        <form class="card-body pt-2" on:submit={createUser}>
-          <div class="form-control">
-            <label for="username" class="label"
-              ><span class="label-text">Your username</span></label
+  {#if ready}
+    {#if user === null}
+      <div
+        class="login flex min-h-screen bg-neutral justify-center items-center"
+      >
+        <div class="card w-full max-w-sm bg-base-100 px-4 py-8 shadow-xl">
+          <div class="px-4">
+            <h1
+              class="text-3xl font-bold text-center my-5 bg-clip-text bg-gradient-to-br"
             >
-            <input type="text" name="username" class="input input-bordered" />
+              Pick a username
+            </h1>
           </div>
-          <div class="form-control mt-6">
-            <button id="login" type="submit" class="btn">Start chatting</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  {/if}
-
-  {#if user !== null}
-    <div class="drawer drawer-mobile">
-      <input id="drawer-left" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content flex flex-col">
-        <div class="navbar w-full">
-          <div class="navbar-start">
-            <label
-              for="drawer-left"
-              class="btn btn-square btn-ghost lg:hidden drawer-button"
-            >
-              <i class="i-feather-menu text-lg"></i>
-            </label>
-          </div>
-          <div class="navbar-center flex flex-col">
-            <p>Feathers Chat</p>
-            <label for="drawer-right" class="text-xs cursor-pointer">
-              <span class="online-count">{users.length}</span> User(s)
-            </label>
-          </div>
-        </div>
-        <div id="chat" class="h-full overflow-y-auto px-3">
-          {#each messages as message (message.id)}
-            <div class="chat chat-start py-2">
-              <div class="chat-image avatar">
-                <div class="w-10 rounded-full">
-                  <img
-                    src={getUserById(message.userId)?.avatar}
-                    alt={getUserById(message.userId)?.username}
-                  />
-                </div>
-              </div>
-              <div class="chat-header pb-1">
-                {getUserById(message.userId)?.username}
-                <time class="text-xs opacity-50"
-                  >{formatDate(message.createdAt)}</time
-                >
-              </div>
-              <div class="chat-bubble">{message.text}</div>
+          <form class="card-body pt-2" on:submit={createUser}>
+            <div class="form-control">
+              <label for="username" class="label"
+                ><span class="label-text">Your username</span></label
+              >
+              <input type="text" name="username" class="input input-bordered" />
             </div>
-            <div id="message-end" />
-          {/each}
-        </div>
-        <div class="form-control w-full py-2 px-3">
-          <form
-            class="input-group overflow-hidden"
-            id="send-message"
-            on:submit={createMessage}
-          >
-            <input
-              name="text"
-              type="text"
-              placeholder="Compose message"
-              class="input input-bordered w-full"
-              bind:value={text}
-            />
-            <button type="submit" class="btn">Send</button>
+            <div class="form-control mt-6">
+              <button id="login" type="submit" class="btn"
+                >Start chatting</button
+              >
+            </div>
           </form>
         </div>
       </div>
-      <div class="drawer-side">
-        <label for="drawer-left" class="drawer-overlay"></label>
-        <ul
-          class="menu user-list compact p-2 overflow-y-auto w-60 bg-base-300 text-base-content"
-        >
-          <li class="menu-title"><span>Users</span></li>
-          {#each users as current (current.id)}
-            <li class="user">
-              <a
-                href="#"
-                class={user.id === current.id ? 'text-secondary font-bold' : ''}
+    {/if}
+
+    {#if user !== null}
+      <div class="drawer drawer-mobile">
+        <input id="drawer-left" type="checkbox" class="drawer-toggle" />
+        <div class="drawer-content flex flex-col">
+          <div class="navbar w-full">
+            <div class="navbar-start">
+              <label
+                for="drawer-left"
+                class="btn btn-square btn-ghost lg:hidden drawer-button"
               >
-                <div class="avatar indicator">
-                  <div class="w-6 rounded">
-                    <img src={current.avatar} alt={current.username} />
+                <i class="i-feather-menu text-lg"></i>
+              </label>
+            </div>
+            <div class="navbar-center flex flex-col">
+              <p>Feathers Chat</p>
+              <label for="drawer-right" class="text-xs cursor-pointer">
+                <span class="online-count">{users.length}</span> User(s)
+              </label>
+            </div>
+          </div>
+          <div id="chat" class="h-full overflow-y-auto px-3">
+            {#each messages as message (message.id)}
+              <div class="chat chat-start py-2">
+                <div class="chat-image avatar">
+                  <div class="w-10 rounded-full">
+                    <img
+                      src={getUserById(message.userId)?.avatar}
+                      alt={getUserById(message.userId)?.username}
+                    />
                   </div>
                 </div>
-                <span>{current.username}</span>
-              </a>
-            </li>
-          {/each}
-        </ul>
+                <div class="chat-header pb-1">
+                  {getUserById(message.userId)?.username}
+                  <time class="text-xs opacity-50"
+                    >{formatDate(message.createdAt)}</time
+                  >
+                </div>
+                <div class="chat-bubble">{message.text}</div>
+              </div>
+              <div id="message-end" />
+            {/each}
+          </div>
+          <div class="form-control w-full py-2 px-3">
+            <form
+              class="input-group overflow-hidden"
+              id="send-message"
+              on:submit={createMessage}
+            >
+              <input
+                name="text"
+                type="text"
+                placeholder="Compose message"
+                class="input input-bordered w-full"
+                bind:value={text}
+              />
+              <button type="submit" class="btn">Send</button>
+            </form>
+          </div>
+        </div>
+        <div class="drawer-side">
+          <label for="drawer-left" class="drawer-overlay"></label>
+          <ul
+            class="menu user-list compact p-2 overflow-y-auto w-60 bg-base-300 text-base-content"
+          >
+            <li class="menu-title"><span>Users</span></li>
+            {#each users as current (current.id)}
+              <li class="user">
+                <a
+                  href="#"
+                  class={user.id === current.id
+                    ? 'text-secondary font-bold'
+                    : ''}
+                >
+                  <div class="avatar indicator">
+                    <div class="w-6 rounded">
+                      <img src={current.avatar} alt={current.username} />
+                    </div>
+                  </div>
+                  <span>{current.username}</span>
+                </a>
+              </li>
+            {/each}
+          </ul>
+        </div>
       </div>
-    </div>
+    {/if}
   {/if}
 </main>
