@@ -19,7 +19,9 @@ const repo = new Repo({
   network: [ new BrowserWebSocketClientAdapter('wss://sync.automerge.org') ],
   storage: new IndexedDBStorageAdapter()
 });
-const automergeUrl = 'automerge:49yJNUGigUJJjN9XNfGXurBh2W3Y' as AnyDocumentId;
+const automergeUrl = 'automerge:4TUCniKasm2KNxVmKTU5D9fFi7bm' as AnyDocumentId;
+// To create a new chat repository (copy the URL from the console)
+// console.log(repo.create<ChatDocument>({ messages: [], users: [] }).url)
 
 function App() {
   // Keep references to message list, current user and Automerge handle
