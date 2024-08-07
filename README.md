@@ -23,6 +23,8 @@ npm run init
 
 When prompted, paste your application id and choose your framework. Make sure to visit the development server (default [localhost:3000](http://localhost:3000)) that will be started to finalize initialization.
 
+## Developing
+
 Once initialized, the development server for any framework can be started like this:
 
 ```sh
@@ -31,3 +33,18 @@ npm run dev:<framework>
 npm run dev:react
 npm run dev:svelte
 ```
+
+## Build and deploy
+
+The chat application can be deployed like any static website. The build can be run with
+
+```sh
+npm run build:<framework>
+
+npm run build:react
+npm run build:svelte
+```
+
+Note that in a CI environment, the `VITE_CLOUD_APP_ID` and `VITE_AUTOMERGE_URL` from the `.env` files need to be set.
+
+Then the `<framework>-chat/dist/` folder can be deployed like any static website.

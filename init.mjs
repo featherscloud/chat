@@ -6,8 +6,7 @@ import { renderTemplate, toFile, prompt, exec } from '@featherscloud/pinion';
 import { Repo } from '@automerge/automerge-repo';
 import { BrowserWebSocketClientAdapter } from '@automerge/automerge-repo-network-websocket';
 
-const template = ({ appId, automergeUrl }) => `
-VITE_CLOUD_APP_ID=${appId}
+const template = ({ appId, automergeUrl }) => `VITE_CLOUD_APP_ID=${appId}
 VITE_AUTOMERGE_URL=${automergeUrl}
 `;
 
