@@ -79,7 +79,7 @@
     } catch (error) {
       // Redirect to Feathers Cloud Auth login
       if (error instanceof LoginRequiredError) {
-        window.location.href = error.loginUrl;
+        window.location.href = await auth.getLoginUrl(error);
       }
       throw error;
     }
