@@ -18,7 +18,7 @@
   import { afterUpdate } from 'svelte';
 
   // Initialize Feathers Cloud Auth
-  const appId = 'did:key:z6MkrKFRttVTWvf7SkHCThevJik8774WuTgxUuPoX4onXN7B';
+  const appId = import.meta.env.VITE_CLOUD_APP_ID as string;
   const auth = createClient({ appId });
   const verifier = createVerifier({ appId });
 
@@ -27,17 +27,8 @@
     network: [new BrowserWebSocketClientAdapter('wss://sync.automerge.org')],
     storage: new IndexedDBStorageAdapter()
   });
-  // console.log(repo.create<ChatDocument>({ messages: [], users: [] }).url);
-  const automergeUrl =
-    'automerge:3FN6EHp9HUdWn6qwqouqgDmprCrV' as AnyDocumentId;
+  const automergeUrl = import.meta.env.VITE_AUTOMERGE_URL as AnyDocumentId;
   const handle = repo.find<ChatDocument>(automergeUrl);
-
-  console.log(
-    repo.create({
-      messages: [],
-      users: []
-    }).url
-  );
 
   let ready = false;
   let cloudAuthUser: CloudAuthUser | null = null;
@@ -47,6 +38,20 @@
   let text: string = '';
 
   const getUserById = (id: string) => users.find((user) => user.id === id);
+
+  const loadStylesheet = async () => {
+    const res = await fetch(`https://api.feathers.cloud/login-page/${appId}`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        Authorization: await auth.getHeader()
+      }
+    });
+
+    console.log(await res.json());
+  };
+
+  // loadStylesheet();
 
   const init = async () => {
     try {
@@ -178,7 +183,7 @@
               </label>
             </div>
             <div class="navbar-center flex flex-col">
-              <p>Feathers Chat</p>
+              <p>Local-First Chat</p>
               <label for="drawer-right" class="text-xs cursor-pointer">
                 <span class="online-count">{users.length}</span> User(s)
               </label>

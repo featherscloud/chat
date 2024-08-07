@@ -5,5 +5,29 @@ A local-first chat application built with different frameworks. It
 - Has secure user logins
 - Works offline
 - Loads faster than server side rendering
-- Does not need a server
 - Can be deployed like any static website
+- Does not need a server
+
+## Getting started
+
+To get user logins, sign up for [Feathers Cloud Auth](https://feathers.cloud/auth/) at [app.feathers.cloud](https://app.feathers.cloud) and create a new organization and application. Make sure to copy the application id (`did:key:`) and customize the theme 🤩
+
+Then run the following in a terminal:
+
+```sh
+git clone git@github.com:featherscloud/chat.git
+cd chat
+npm install
+npm run init
+```
+
+When prompted, paste your application id and choose your framework. Make sure to visit the development server (default [localhost:3000](http://localhost:3000)) that will be started to finalize initialization.
+
+Once initialized, the development server for any framework can be started like this:
+
+```sh
+npm run dev:<framework>
+
+npm run dev:react
+npm run dev:svelte
+```

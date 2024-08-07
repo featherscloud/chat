@@ -19,7 +19,7 @@ export const Chat = ({ messages, user, users, createMessage }: ChatOptions) => {
           </label>
         </div>
         <div className="navbar-center flex flex-col">
-          <p>Feathers Chat</p>
+          <p>Local-First Chat</p>
           <label htmlFor="drawer-right" className="text-xs cursor-pointer">
             <span className="online-count">{users.length}</span> User(s)
           </label>

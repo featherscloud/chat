@@ -1,20 +1,30 @@
 {
   "name": "@featherscloud/chat",
   "version": "1.0.0",
-  "description": "A fully local-first chat written in different frameworks.",
+  "description": "A local-first chat written in different frameworks.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:react": "npm run build --workspace react-chat",
-    "build:vue": "npm run build --workspace vue-chat",
-    "build:svelte": "npm run build --workspace svelte-chat"
+    "build:svelte": "npm run build --workspace svelte-chat",
+    "dev:svelte": "npm run dev --workspace svelte-chat",
+    "dev:react": "npm run dev --workspace react-chat",
+    "update-dependencies": "npm exec --workspaces -- ncu -u",
+    "init": "pinion init.mjs"
   },
   "workspaces": [
     "react-chat",
-    "vue-chat",
     "svelte-chat"
   ],
   "keywords": [],
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "npm-check-updates": "^17.0.3"
+  },
+  "dependencies": {
+    "@automerge/automerge-repo": "^1.2.1",
+    "@automerge/automerge-repo-network-websocket": "^1.2.1",
+    "@featherscloud/pinion": "^0.5.4"
+  }
 }

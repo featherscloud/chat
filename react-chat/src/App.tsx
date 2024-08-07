@@ -10,7 +10,7 @@ import { LoginRequiredError, createClient, createVerifier } from '@featherscloud
 import { ChatDocument, CloudAuthUser, Message, User, sha256 } from './utils';
 
 // Initialize Feathers Cloud Auth
-const appId = 'did:key:z6MkqewNkDS2nFzVQezn9xEfLyiH5KQaSFqaec2XEyKw4of9';
+const appId = import.meta.env.VITE_CLOUD_APP_ID as string;
 const auth = createClient({ appId });
 const verifier = createVerifier({ appId });
 
@@ -19,9 +19,7 @@ const repo = new Repo({
   network: [ new BrowserWebSocketClientAdapter('wss://sync.automerge.org') ],
   storage: new IndexedDBStorageAdapter()
 });
-const automergeUrl = 'automerge:4TUCniKasm2KNxVmKTU5D9fFi7bm' as AnyDocumentId;
-// To create a new chat repository (copy the URL from the console)
-// console.log(repo.create<ChatDocument>({ messages: [], users: [] }).url)
+const automergeUrl = import.meta.env.VITE_AUTOMERGE_URL as AnyDocumentId;
 
 function App() {
   // Keep references to message list, current user and Automerge handle
@@ -87,7 +85,7 @@ function App() {
     } catch (error) {
       // Redirect to Feathers Cloud Auth login
       if (error instanceof LoginRequiredError) {
-        window.location.href = error.loginUrl;
+        window.location.href = await auth.getLoginUrl(error)
       }
       throw error;
     }

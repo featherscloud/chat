@@ -4,27 +4,28 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3000",
     "build": "vite build",
     "preview": "vite preview",
     "check": "svelte-check --tsconfig ./tsconfig.json && tsc -p tsconfig.node.json"
   },
   "devDependencies": {
+    "@featherscloud/pinion": "^0.5.4",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@tsconfig/svelte": "^5.0.4",
     "svelte": "^4.2.18",
-    "svelte-check": "^3.8.1",
+    "svelte-check": "^3.8.5",
     "tslib": "^2.6.3",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.1",
+    "typescript": "^5.5.4",
+    "vite": "^5.3.5",
     "vite-plugin-wasm": "^3.3.0"
   },
   "dependencies": {
-    "@automerge/automerge-repo": "^1.1.12",
-    "@automerge/automerge-repo-network-websocket": "^1.1.12",
-    "@automerge/automerge-repo-storage-indexeddb": "^1.1.12",
-    "@featherscloud/auth": "^0.4.1",
-    "@feathersjs/errors": "^5.0.27",
-    "vite-plugin-top-level-await": "^1.4.1"
+    "@automerge/automerge-repo": "^1.2.1",
+    "@automerge/automerge-repo-network-websocket": "^1.2.1",
+    "@automerge/automerge-repo-storage-indexeddb": "^1.2.1",
+    "@featherscloud/auth": "^0.6.2",
+    "@feathersjs/errors": "^5.0.29",
+    "vite-plugin-top-level-await": "^1.4.2"
   }
 }
