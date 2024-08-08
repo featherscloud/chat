@@ -39,20 +39,6 @@
 
   const getUserById = (id: string) => users.find((user) => user.id === id);
 
-  const loadStylesheet = async () => {
-    const res = await fetch(`https://api.feathers.cloud/login-page/${appId}`, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        Authorization: await auth.getHeader()
-      }
-    });
-
-    console.log(await res.json());
-  };
-
-  // loadStylesheet();
-
   const init = async () => {
     try {
       // Get Feathers Cloud Auth access token
