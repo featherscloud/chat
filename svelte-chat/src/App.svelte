@@ -24,12 +24,29 @@
 
   // Initialize Automerge
   const repo = new Repo({
-    network: [new BrowserWebSocketClientAdapter('wss://sync.automerge.org')],
+    network: [new BrowserWebSocketClientAdapter('wss://dweb.feathers.cloud')],
     storage: new IndexedDBStorageAdapter()
   });
-  const automergeUrl = import.meta.env.VITE_AUTOMERGE_URL as AnyDocumentId;
-  const handle = repo.find<ChatDocument>(automergeUrl);
+  // const automergeUrl = repo.create<ChatDocument>({
+  //   users: [],
+  //   messages: []
+  // });
+  // const handle = repo.find<ChatDocument>(automergeUrl);
+  function getHandle() {
+    if (window.location.hash) {
+      return repo.find<ChatDocument>((window.location as any).hash.slice(1));
+    } else {
+      const newRepo = repo.create<ChatDocument>({
+        users: [],
+        messages: []
+      });
+      window.location.hash = newRepo.url;
+      return newRepo
+    }
+  }
 
+  const handle = getHandle()
+  
   let ready = false;
   let cloudAuthUser: CloudAuthUser | null = null;
   let user: User | null = null;
@@ -42,9 +59,11 @@
   const init = async () => {
     try {
       // Get Feathers Cloud Auth access token
-      const accessToken = await auth.getAccessToken();
+      // const accessToken = await auth.getAccessToken();
+      const device = await auth.getDevice()
+      cloudAuthUser = { id: device.deviceId };
+
       // Verify our token (this will redirect to the login screen if necessary)
-      const { user: verifiedUser } = await verifier.verify(accessToken);
       const loadDocument = (doc?: Doc<ChatDocument>) => {
         if (doc) {
           user =
@@ -55,7 +74,6 @@
         ready = true;
       };
 
-      cloudAuthUser = verifiedUser;
       // Update application data when document changes
       handle.on('change', ({ doc }) => loadDocument(doc));
       // Initialise the document if it is already available

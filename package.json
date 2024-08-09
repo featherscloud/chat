@@ -14,7 +14,8 @@
   },
   "workspaces": [
     "react-chat",
-    "svelte-chat"
+    "svelte-chat",
+    "sync-server"
   ],
   "keywords": [],
   "author": "",
