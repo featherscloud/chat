@@ -104,14 +104,14 @@
     } else if (users.find((user) => user.username === username)) {
       alert('Username already taken, please choose another one');
     } else {
-      const emailHash = await sha256(cloudAuthUser?.email || 'unknown');
+      const emailHash = await sha256(cloudAuthUser?.email || username || 'unknown');
 
       handle.change((doc) => {
         if (cloudAuthUser !== null) {
           doc.users.push({
             id: cloudAuthUser.id,
             avatar: `https://www.gravatar.com/avatar/${emailHash}`,
-            username
+            username: username.split('@')[0]
           });
         }
       });
@@ -190,20 +190,18 @@
             <h1
               class="text-3xl font-bold text-center my-5 bg-clip-text bg-gradient-to-br"
             >
-              Pick a username
+              Enter your email or username
             </h1>
           </div>
           <form class="card-body pt-2" on:submit={createUser}>
             <div class="form-control">
-              <label for="username" class="label"
-                ><span class="label-text">Your username</span></label
-              >
+              <label for="username" class="label">
+                <span class="label-text">Your email or username</span>
+              </label>
               <input type="text" name="username" class="input input-bordered" />
             </div>
             <div class="form-control mt-6">
-              <button id="login" type="submit" class="btn"
-                >Start chatting</button
-              >
+              <button id="login" type="submit" class="btn">Start chatting</button>
             </div>
           </form>
         </div>
@@ -279,33 +277,36 @@
         </div>
         <div class="drawer-side">
           <label for="drawer-left" class="drawer-overlay"></label>
-          <ul
-            class="menu user-list compact p-2 overflow-y-auto w-60 bg-base-300 text-base-content"
-          >
-            <li class="menu-title"><span>Users</span></li>
-            {#each users as current (current.id)}
-              <li class="user">
-                <a
+          <div class="flex flex-col h-full bg-base-300 justify-between w-11/12 border-r border-base-100">
+            <div class="flex flex-col p-2 overflow-y-auto w-60 text-base-content w-full">
+              <ul class="menu user-list compact py-2 overflow-y-auto w-60 text-base-content">
+                <li class="menu-title"><span>Users</span></li>
+                {#each users as current (current.id)}
+                <li class="user">
+                  <a
                   href="#"
                   class={user.id === current.id
-                    ? 'text-secondary font-bold'
-                    : ''}
-                >
-                  <div class="avatar indicator">
-                    <div class="w-6 rounded">
-                      <img src={current.avatar} alt={current.username} />
+                        ? 'text-secondary font-bold'
+                        : ''}
+                    >
+                    <div class="avatar indicator">
+                      <div class="w-6 rounded">
+                        <img src={current.avatar} alt={current.username} />
+                      </div>
                     </div>
-                  </div>
-                  <span>{current.username}</span>
-                </a>
-              </li>
-            {/each}
-          </ul>
+                    <span>{current.username}</span>
+                  </a>
+                </li>
+                {/each}
+              </ul>
+            </div>
+            
+            <div class="m-4">
+              <a href="/" target="_blank" type="button" class="btn btn-accent btn-block">New Chat</a>
+            </div>
+          </div>
         </div>
       </div>
-
-      
-
     {/if}
   {/if}
 
