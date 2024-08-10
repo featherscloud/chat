@@ -26,6 +26,7 @@
     "@automerge/automerge-repo-storage-indexeddb": "^1.2.1",
     "@featherscloud/auth": "^0.6.2",
     "@feathersjs/errors": "^5.0.29",
+    "qrcode": "^1.5.4",
     "vite-plugin-top-level-await": "^1.4.2"
   }
 }
