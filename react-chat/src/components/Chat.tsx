@@ -30,8 +30,8 @@ export const Chat = ({ messages, user, users, createMessage }: ChatOptions) => {
         <CreateMessage onSubmit={createMessage} />
       </div>
     </div>
-    <div className="drawer-side"><label htmlFor="drawer-left" className="drawer-overlay"></label>
-      <ul className="menu user-list compact p-2 overflow-y-auto w-60 bg-base-300 text-base-content">
+    <div className="drawer-side overflow-y-auto overflow-x-none"><label htmlFor="drawer-left" className="drawer-overlay"></label>
+      <ul className="menu user-list compact p-2 w-60 bg-base-300 text-base-content">
         <li className="menu-title"><span>Users</span></li>
         {users.map(current => <li className="user" key={current.id}>
           <a className={ user.id === current.id ? 'text-secondary font-bold' : ''}>

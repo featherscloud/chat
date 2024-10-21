@@ -214,10 +214,10 @@
             </form>
           </div>
         </div>
-        <div class="drawer-side">
+        <div class="drawer-side overflow-y-auto overflow-x-none">
           <label for="drawer-left" class="drawer-overlay"></label>
           <ul
-            class="menu user-list compact p-2 overflow-y-auto w-60 bg-base-300 text-base-content"
+            class="menu user-list compact p-2 w-60 bg-base-300 text-base-content"
           >
             <li class="menu-title"><span>Users</span></li>
             {#each users as current (current.id)}
