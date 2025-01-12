@@ -1,4 +1,5 @@
-import { Message, User, cn } from "../utils";
+import { DocHandle } from "@automerge/automerge-repo";
+import { ChatDocument, Message, User, cn } from "../utils";
 import { CreateMessage } from "./CreateMessage"
 import { MessageList } from "./MessageList"
 
@@ -7,9 +8,11 @@ export type ChatOptions = {
   users: User[];
   messages: Message[];
   createMessage: (text: string) => void;
+  handle: DocHandle<ChatDocument> 
+  
 };
 
-export const Chat = ({ messages, user, users, createMessage }: ChatOptions) => {
+export const Chat = ({ messages, user, users, createMessage, handle }: ChatOptions) => {
   return <div className="drawer drawer-mobile"><input id="drawer-left" type="checkbox" className="drawer-toggle" />
     <div className="drawer-content flex flex-col">
       <div className="navbar w-full">
@@ -25,7 +28,7 @@ export const Chat = ({ messages, user, users, createMessage }: ChatOptions) => {
           </label>
         </div>
       </div>
-      <MessageList messages={messages} users={users} />
+      <MessageList messages={messages} users={users} user={user} handle={handle} />
       <div className="form-control w-full py-2 px-3">
         <CreateMessage onSubmit={createMessage} />
       </div>

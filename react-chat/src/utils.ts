@@ -14,6 +14,8 @@ export type Message = {
   text: string;
   createdAt: number;
   userId: string;
+  // Adding likes data structure to each message
+  likes: string[];
 };
 
 export type ChatDocument = {
