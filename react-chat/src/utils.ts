@@ -9,11 +9,14 @@ export type User = {
   avatar: string;
 };
 
+export type Reactions = Record<string, Record<string, true>>;
+
 export type Message = {
   id: string;
   text: string;
   createdAt: number;
   userId: string;
+  reactions?: Reactions;
 };
 
 export type ChatDocument = {

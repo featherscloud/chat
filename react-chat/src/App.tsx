@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import {useEffect, useMemo, useState} from 'react'
 import { AnyDocumentId, DocHandle, Repo } from '@automerge/automerge-repo';
 import { BrowserWebSocketClientAdapter } from '@automerge/automerge-repo-network-websocket';
 import { IndexedDBStorageAdapter } from '@automerge/automerge-repo-storage-indexeddb';
@@ -8,6 +8,7 @@ import { Chat } from './components/Chat'
 import { UserSettings } from './components/UserSettings'
 import { LoginRequiredError, createClient, createVerifier } from '@featherscloud/auth'
 import { ChatDocument, CloudAuthUser, Message, User, sha256 } from './utils';
+import {ChatContext, ChatContextValue} from "./components/ChatContext.tsx";
 
 // Initialize Feathers Cloud Auth
 const appId = import.meta.env.VITE_CLOUD_APP_ID as string;
@@ -48,20 +49,6 @@ function App() {
     }
   }
 
-  // Create a new Message
-  const createMessage = (text: string) => {
-    if (handle && user) {
-      handle.change(doc => {
-        doc.messages.push({
-          id: crypto.randomUUID(),
-          text: text,
-          createdAt: Date.now(),
-          userId: user.id
-        })
-      })
-    }
-  }
-
   // Initialize the application
   const init = async () => {
     try {
@@ -91,6 +78,8 @@ function App() {
     }
   }
 
+  const contextValue = useMemo<ChatContextValue>(()=>({user, handle}), [user, handle]);
+
   useEffect(() => {
     init()
   }, [])
@@ -98,7 +87,7 @@ function App() {
   if (handle?.isReady()) {
     return user === null
       ? <UserSettings onSubmit={createUser} />
-      : <Chat messages={messages} user={user} users={users} createMessage={createMessage} />
+      : <ChatContext.Provider value={contextValue}><Chat messages={messages} users={users} /></ChatContext.Provider>
   }
 }
 
