@@ -1,11 +1,14 @@
-import { useEffect, useRef } from "react"
-import { Message, User } from "../utils"
+import { useEffect, useRef, useState } from "react"
+import { ChatDocument, Message, User } from "../utils"
+import { DocHandle } from "@automerge/automerge-repo"
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
 
 type MessageListProps = {
   messages: Message[]
   users: User[]
+  user: User
+  handle: DocHandle<ChatDocument>
 }
 
 const formatDate = (timestamp: number) =>
@@ -14,21 +17,40 @@ const formatDate = (timestamp: number) =>
     dateStyle: 'medium'
   }).format(new Date(timestamp))
 
-export const MessageList = ({ messages, users }: MessageListProps) => {
+export const MessageList = ({ messages, users, user, handle }: MessageListProps) => {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const usersById = users.reduce((acc, user) => {
     acc[user.id] = user
     return acc
   }, {} as Record<string, User>)
 
+  function getLikeCount(message: Message) {
+    return message.likes?.length || 0;
+  }
+
+  // Update the message's Like 
+  const createLike = (messageId: string) => {
+    if (handle && user) {
+      handle.change(doc => {
+        const msg = doc.messages.find(message => message.id === messageId);
+        if (msg) {
+          const likeArray = msg.likes || [];
+          // check to see if the user has already liked this message
+          if (likeArray.includes(user.id)) {
+            // Remove the like if the user has already liked the message
+            msg.likes = likeArray.filter(like => like !== user.id)
+          } else {
+            // Add the user to the array of users who have liked this message
+            msg.likes = likeArray.concat(user.id);
+          }
+        }
+      })
+    }
+  }
+
   useEffect(() => {
     (messagesEndRef.current)?.scrollIntoView({ behavior: "auto" })
   }, [])
-
-  // Scroll to bottom when messages change
-  useEffect(() => {
-    (messagesEndRef.current)?.scrollIntoView({ behavior: "smooth" })
-  }, [messages])
 
   return <div id="chat" className="h-full overflow-y-auto px-3">
     {messages.map(message => <div className="chat chat-start py-2" key={message.id}>
@@ -43,6 +65,14 @@ export const MessageList = ({ messages, users }: MessageListProps) => {
       </div>
       <div className="chat-bubble break-words"
         dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(message.text, { async: false }))}} />
+      <div className="chat-footer">
+        {/* Swap icons based on whether users have liked it or not */}
+        <span className="text-xs" onClick={() => createLike(message.id)}>
+          {getLikeCount(message) > 0
+            ? <span>❤️ {getLikeCount(message)} Like{getLikeCount(message) > 1 ? 's' : ''}</span>
+            : '🤍'}
+        </span>
+       </div>
     </div>)}
     <div ref={messagesEndRef} />
   </div>

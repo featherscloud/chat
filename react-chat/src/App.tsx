@@ -56,7 +56,8 @@ function App() {
           id: crypto.randomUUID(),
           text: text,
           createdAt: Date.now(),
-          userId: user.id
+          userId: user.id,
+          likes:[]
         })
       })
     }
@@ -98,7 +99,7 @@ function App() {
   if (handle?.isReady()) {
     return user === null
       ? <UserSettings onSubmit={createUser} />
-      : <Chat messages={messages} user={user} users={users} createMessage={createMessage} />
+      : <Chat messages={messages} user={user} users={users} createMessage={createMessage} handle={handle} />
   }
 }
 
