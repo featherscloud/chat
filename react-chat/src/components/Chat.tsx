@@ -37,7 +37,7 @@ export const Chat = ({ messages, user, users, createMessage, handle }: ChatOptio
       <ul className="menu user-list compact p-2 w-60 bg-base-300 text-base-content">
         <li className="menu-title"><span>Users</span></li>
         {users.map(current => <li className="user" key={current.id}>
-          <a className={ cn(user.id === current.id ? 'text-secondary font-bold' : '', 'no-underline')}>
+          <a className={cn(user.id === current.id ? 'text-secondary font-bold' : '', 'no-underline')}>
             <div className="avatar indicator">
               <div className="w-6 rounded">
                 <img src={current.avatar} alt={current.username!} />
