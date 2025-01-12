@@ -16,6 +16,8 @@
   import type { ChatDocument, CloudAuthUser, Message, User } from './utils.js';
   import { formatDate, sha256 } from './utils.js';
   import { afterUpdate } from 'svelte';
+  import { marked } from 'marked';
+  import DOMPurify from 'dompurify';
 
   // Initialize Feathers Cloud Auth
   const appId = import.meta.env.VITE_CLOUD_APP_ID as string;
@@ -192,7 +194,7 @@
                     >{formatDate(message.createdAt)}</time
                   >
                 </div>
-                <div class="chat-bubble">{message.text}</div>
+                <div class="chat-bubble">{@html DOMPurify.sanitize(marked.parse(message.text))}</div>
               </div>
             {/each}
             <div id="message-end" />
