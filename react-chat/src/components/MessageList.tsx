@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef } from "react"
 import { ChatDocument, Message, User } from "../utils"
 import { DocHandle } from "@automerge/automerge-repo"
 import { marked } from 'marked';
