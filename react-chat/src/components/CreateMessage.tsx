@@ -7,6 +7,8 @@ type CreateMessageOptions = {
 export const CreateMessage = ({ onSubmit }: CreateMessageOptions) => {
   const [text, setText] = useState('')
   const handleSubmit = async () => {
+    if (text === "") return;
+
     onSubmit(text)
     setText('')
   }
