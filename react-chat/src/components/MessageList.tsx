@@ -43,7 +43,6 @@ export const MessageList = ({ messages, users, user, handle }: MessageListProps)
       handle.change(doc => {
         const msg = doc.messages.find(message => message.id === messageId);
         if (msg) {
-          
           const likeArray = msg.likes || [];
           // check to see if the user has already liked this message
           if (likeArray.includes(user.id)) {
@@ -76,8 +75,8 @@ export const MessageList = ({ messages, users, user, handle }: MessageListProps)
             </div>
             <div className="chat-bubble">{message.text}</div>
             
-            <div className="chat-footer flex items-center space-x-2 pt-2">
-              {/* Display like count with red heart if liked, white heart if no likes */}
+            <div className="chat-footer">
+              {/* Swap icons based on whether users have liked it or not */}
               <span className="text-xs" onClick={() => createLike(message.id)}>
                 {getLikeCount(message) > 0
                   ? <span>❤️ {getLikeCount(message)} Like{getLikeCount(message) > 1 ? 's' : ''}</span>
