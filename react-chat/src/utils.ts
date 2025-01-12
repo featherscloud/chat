@@ -38,3 +38,7 @@ export async function sha256(text: string) {
 
   return hashHex;
 }
+
+export function cn(...classes) {
+  return classes.join(" ")
+}
