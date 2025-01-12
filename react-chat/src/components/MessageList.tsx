@@ -10,7 +10,7 @@ marked.use({
     link({ href, title, tokens }: Tokens.Link): string {
       const text = this.parser.parseInline(tokens);
 
-       let cleanHref
+      let cleanHref
 
       try {
         cleanHref = encodeURI(href).replace(/%25/g, '%');
