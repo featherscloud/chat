@@ -68,7 +68,7 @@ function App() {
       // Get Feathers Cloud Auth access token
       const accessToken = await auth.getAccessToken();
       // Verify our token (this will redirect to the login screen if necessary)
-      const { user: cloudAuthUser } = await verifier.verify(accessToken);
+      const { user: cloudAuthUser } = await verifier.verify(accessToken)
       const currentHandle = repo.find<ChatDocument>(automergeUrl)
 
       // Update application data when document changes
@@ -79,7 +79,7 @@ function App() {
         setMessages(doc.messages)
         setUsers(doc.users)
       })
-        
+
       setCloudAuthUser(cloudAuthUser)
       setHandle(currentHandle)
     } catch (error) {
