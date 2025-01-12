@@ -66,3 +66,11 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.reaction {
+  font-size: .8rem;
+  display: block;
+  padding: 0rem .5rem .125rem .25rem;
+  border-radius: 999px;
+  background: #0f172a;
+}

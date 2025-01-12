@@ -1,15 +1,31 @@
 import { Message, User } from "../utils";
 import { CreateMessage } from "./CreateMessage"
 import { MessageList } from "./MessageList"
+import {useChat} from "./ChatContext.tsx";
+import {useCallback} from "react";
 
 export type ChatOptions = {
-  user: User;
   users: User[];
   messages: Message[];
-  createMessage: (text: string) => void;
 };
 
-export const Chat = ({ messages, user, users, createMessage }: ChatOptions) => {
+export const Chat = ({ messages, users }: ChatOptions) => {
+  const {user, handle} = useChat();
+
+  // Create a new Message
+  const createMessage = useCallback((text: string) => {
+    if (handle && user) {
+      handle.change(doc => {
+        doc.messages.push({
+          id: crypto.randomUUID(),
+          text: text,
+          createdAt: Date.now(),
+          userId: user.id
+        })
+      })
+    }
+  }, [user, handle])
+
   return <div className="drawer drawer-mobile"><input id="drawer-left" type="checkbox" className="drawer-toggle" />
     <div className="drawer-content flex flex-col">
       <div className="navbar w-full">
@@ -34,7 +50,7 @@ export const Chat = ({ messages, user, users, createMessage }: ChatOptions) => {
       <ul className="menu user-list compact p-2 w-60 bg-base-300 text-base-content">
         <li className="menu-title"><span>Users</span></li>
         {users.map(current => <li className="user" key={current.id}>
-          <a className={ user.id === current.id ? 'text-secondary font-bold' : ''}>
+          <a className={ user!.id === current.id ? 'text-secondary font-bold' : ''}>
             <div className="avatar indicator">
               <div className="w-6 rounded"><img src={current.avatar} alt={current.username!} /></div>
             </div><span>{current.username}</span>
