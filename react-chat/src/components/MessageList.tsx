@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react"
 import { Message, User } from "../utils"
+import { marked } from 'marked';
+import DOMPurify from 'dompurify';
 
 type MessageListProps = {
   messages: Message[]
@@ -35,7 +37,8 @@ export const MessageList = ({ messages, users }: MessageListProps) => {
         {usersById[message.userId]?.username}
         <time className="text-xs opacity-50">{formatDate(message.createdAt)}</time>
       </div>
-      <div className="chat-bubble">{message.text}</div>
+      <div className="chat-bubble"
+        dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(message.text))}} />
     </div>)}
     <div ref={messagesEndRef} />
   </div>
