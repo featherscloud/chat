@@ -67,7 +67,7 @@ export const MessageList = ({ messages, users, user, handle }: MessageListProps)
         dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(message.text, { async: false }))}} />
       <div className="chat-footer">
         {/* Swap icons based on whether users have liked it or not */}
-        <span className="text-xs" onClick={() => createLike(message.id)}>
+        <span className="text-xs cursor-pointer" onClick={() => createLike(message.id)}>
           {getLikeCount(message) > 0
             ? <span>❤️ {getLikeCount(message)} Like{getLikeCount(message) > 1 ? 's' : ''}</span>
             : '🤍'}
