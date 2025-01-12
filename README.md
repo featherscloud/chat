@@ -21,7 +21,7 @@ npm install
 npm run init
 ```
 
-When prompted, paste your application id and choose your framework. Make sure to visit the development server (default [localhost:3000](http://localhost:3000)) that will be started to finalize initialization.
+When prompted, paste your application id and choose your framework. Make sure to visit the development server (default [localhost:3030](http://localhost:3030)) that will be started to finalize initialization.
 
 ## Developing
 
