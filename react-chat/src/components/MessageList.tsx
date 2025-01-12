@@ -38,7 +38,7 @@ export const MessageList = ({ messages, users }: MessageListProps) => {
         <time className="text-xs opacity-50">{formatDate(message.createdAt)}</time>
       </div>
       <div className="chat-bubble"
-        dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(message.text))}} />
+        dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(message.text, { async: false }))}} />
     </div>)}
     <div ref={messagesEndRef} />
   </div>
